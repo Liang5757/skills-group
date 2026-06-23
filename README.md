@@ -1,4 +1,4 @@
-# Codex Skills
+# Skills Group
 
 A collection of reusable Codex skills.
 
