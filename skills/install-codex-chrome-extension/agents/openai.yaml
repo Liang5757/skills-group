@@ -1,0 +1,4 @@
+interface:
+  display_name: "Install Codex Chrome Extension"
+  short_description: "Install and validate the Codex Chrome extension."
+  default_prompt: "Use $install-codex-chrome-extension to install and validate the Codex Chrome extension."
