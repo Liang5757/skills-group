@@ -7,6 +7,7 @@ A collection of reusable Codex skills.
 | Skill | Description |
 | --- | --- |
 | [Install Codex Chrome Extension](skills/install-codex-chrome-extension) | Install, unpack, validate, and troubleshoot the Codex Chrome Extension with the required official extension ID. |
+| [Video Downloader](skills/video-downloader) | Download videos and audio from yt-dlp supported websites with configurable quality, cookies, subtitles, and metadata. |
 
 ## Usage
 

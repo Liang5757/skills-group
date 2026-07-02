@@ -1,0 +1,4 @@
+interface:
+  display_name: "Video Downloader"
+  short_description: "Download videos and audio with yt-dlp"
+  default_prompt: "Use $video-downloader to download a public video URL as MP4 or MP3."
