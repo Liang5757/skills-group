@@ -1,0 +1,4 @@
+interface:
+  display_name: "专利点挖掘"
+  short_description: "从源码、架构、需求与复盘中系统挖掘并排序可评审的专利点候选"
+  default_prompt: "使用 $mine-patent-points 分析这个项目或方案，输出按优先级排序的专利点候选。"

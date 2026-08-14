@@ -11,6 +11,7 @@ A collection of reusable Codex skills.
 | [Developer Growth Analysis](skills/developer-growth-analysis) | Analyze recent Codex or development-assistant work history to identify strengths, growth areas, and focused next actions. |
 | [GPT Image 2](skills/gpt-image-2) | Generate or edit images with GPT Image 2 using local, host-native, or prompt-advisor workflows and structured templates. |
 | [Install Codex Chrome Extension](skills/install-codex-chrome-extension) | Install, unpack, validate, and troubleshoot the Codex Chrome Extension with the required official extension ID. |
+| [Mine Patent Points](skills/mine-patent-points) | Mine, assess, and prioritize patentable technical ideas from source code, architecture, requirements, retrospectives, and engineering discussions. |
 | [Video Downloader](skills/video-downloader) | Download videos and audio from yt-dlp supported websites with configurable quality, cookies, subtitles, and metadata. |
 
 ## Usage
