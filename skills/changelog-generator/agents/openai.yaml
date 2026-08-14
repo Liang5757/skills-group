@@ -1,0 +1,4 @@
+interface:
+  display_name: "Changelog Generator"
+  short_description: "Generate release notes from git history"
+  default_prompt: "Use $changelog-generator to create user-facing release notes from commits since the last tag."
