@@ -1,0 +1,4 @@
+interface:
+  display_name: "Developer Growth Analysis"
+  short_description: "Analyze coding patterns and growth areas"
+  default_prompt: "Use $developer-growth-analysis to analyze my recent Codex work and suggest focused growth areas."
