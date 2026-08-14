@@ -1,0 +1,4 @@
+interface:
+  display_name: "Content Research Writer"
+  short_description: "Research, outline, draft, and polish content"
+  default_prompt: "Use $content-research-writer to research and draft a sourced article outline on my topic."
