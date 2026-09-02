@@ -1,0 +1,33 @@
+name: Installer tests
+
+on:
+  push:
+    paths:
+      - "install.sh"
+      - "install.ps1"
+      - "tests/install.test.sh"
+      - "tests/install.test.ps1"
+      - ".github/workflows/installers.yml"
+  pull_request:
+    paths:
+      - "install.sh"
+      - "install.ps1"
+      - "tests/install.test.sh"
+      - "tests/install.test.ps1"
+      - ".github/workflows/installers.yml"
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test Bash installer
+        run: bash tests/install.test.sh
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test PowerShell installer
+        shell: powershell
+        run: powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File tests/install.test.ps1

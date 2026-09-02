@@ -1,6 +1,8 @@
 ---
 name: developer-growth-analysis
 description: Analyze recent Codex or development-assistant work history to identify coding patterns, strengths, repeated friction, technical learning gaps, and focused growth actions. Use when asked to review recent developer activity, summarize work patterns, create a personal growth report, prepare weekly engineering reflection, recommend learning topics, inspect Codex chat history, or automate recurring developer-growth analysis from local history files or provided transcripts.
+metadata:
+  version: "0.1.0"
 ---
 
 # Developer Growth Analysis

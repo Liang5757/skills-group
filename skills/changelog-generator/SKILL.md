@@ -1,6 +1,8 @@
 ---
 name: changelog-generator
 description: Generate user-facing changelogs, release notes, app store update text, GitHub release notes, weekly/monthly product summaries, and internal release summaries from git commit history, tags, PR summaries, issue lists, or raw change notes. Use when asked to create, update, polish, categorize, or publish a changelog; turn technical commits into customer-readable language; compare versions or date ranges; or filter release noise before documenting changes.
+metadata:
+  version: "0.1.0"
 ---
 
 # Changelog Generator

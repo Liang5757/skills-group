@@ -1,6 +1,8 @@
 ---
 name: content-research-writer
 description: Research, outline, draft, revise, cite, and polish long-form or short-form written content including blog posts, articles, newsletters, tutorials, thought leadership, case studies, technical documentation, social posts, scripts, and presentation narratives. Use when asked to develop a topic, find and evaluate sources, create or improve an outline, strengthen hooks and introductions, preserve an author's voice, give section-by-section feedback, manage citations, adapt content for an audience or channel, or prepare publish-ready copy.
+metadata:
+  version: "0.1.0"
 ---
 
 # Content Research Writer

@@ -1,6 +1,8 @@
 ---
 name: video-downloader
 description: Download public or user-authorized videos and audio from yt-dlp supported websites with configurable quality, container, playlist handling, cookies, subtitles, metadata, proxies, and troubleshooting helpers. Use when the user asks to download, save, archive, inspect, list formats for, or extract audio from video URLs across YouTube, Vimeo, X/Twitter, TikTok, Twitch, Bilibili, news sites, direct HLS/DASH links, or other yt-dlp compatible sources.
+metadata:
+  version: "0.1.0"
 ---
 
 # Video Downloader

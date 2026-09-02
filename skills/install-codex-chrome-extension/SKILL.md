@@ -1,6 +1,8 @@
 ---
 name: install-codex-chrome-extension
 description: Install, download, unpack, preserve the required official ID, validate, and troubleshoot the Codex Chrome Extension. Use when a user asks for Install Codex Chrome Extension, the Codex Chrome plugin package, a loadable unpacked Codex extension, an official-ID build for hehggadaopoacecdllhhajmbjkdcmajg, CRX3 public-key extraction for this install flow, or Disconnected extension diagnostics.
+metadata:
+  version: "0.1.0"
 ---
 
 # Install Codex Chrome Extension
