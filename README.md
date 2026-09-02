@@ -90,15 +90,3 @@ Restart the agent if a newly installed or updated skill does not appear immediat
 ## Manual install
 
 You can still install an individual skill without the installer. Copy one directory from `skills/` into the relevant agent directory listed above, then restart or reload the agent.
-
-## Installer tests
-
-The installers have isolated integration tests for macOS and Windows:
-
-```bash
-bash tests/install.test.sh
-```
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File tests/install.test.ps1
-```
