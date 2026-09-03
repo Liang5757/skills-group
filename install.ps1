@@ -28,6 +28,7 @@ $ErrorActionPreference = "Stop"
 $Repository = "Liang5757/skills-group"
 $RepositoryRef = "main"
 $SupportedAgents = @("codex", "claude", "trae", "trae-cn")
+$SkillsRelativePath = ".agents/skills"
 $UserHome = if ($env:SKILLS_GROUP_USER_HOME) {
     $env:SKILLS_GROUP_USER_HOME
 } else {
@@ -149,9 +150,9 @@ function Get-RemoteSha {
 }
 
 function Get-SkillMetadata([string]$Root) {
-    $skillsRoot = Join-Path $Root "skills"
+    $skillsRoot = Join-Path $Root $SkillsRelativePath
     if (-not (Test-Path -LiteralPath $skillsRoot -PathType Container)) {
-        throw "Repository does not contain skills/."
+        throw "Repository does not contain $SkillsRelativePath/."
     }
 
     $metadata = @()
@@ -226,10 +227,10 @@ function Stage-Repository {
     New-Item -ItemType Directory -Path $stagedRepository -Force | Out-Null
 
     if ($LocalSource) {
-        if (-not (Test-Path -LiteralPath (Join-Path $LocalSource "skills") -PathType Container)) {
-            throw "SKILLS_GROUP_SOURCE_ROOT has no skills/: $LocalSource"
+        if (-not (Test-Path -LiteralPath (Join-Path $LocalSource $SkillsRelativePath) -PathType Container)) {
+            throw "SKILLS_GROUP_SOURCE_ROOT has no $SkillsRelativePath/: $LocalSource"
         }
-        Copy-DirectoryContents (Join-Path $LocalSource "skills") (Join-Path $stagedRepository "skills")
+        Copy-DirectoryContents (Join-Path $LocalSource $SkillsRelativePath) (Join-Path $stagedRepository $SkillsRelativePath)
     } else {
         $archive = Join-Path $script:StageDir "repository.zip"
         $downloadUrl = "$ArchiveUrl/$($script:RemoteSha).zip"
@@ -341,8 +342,10 @@ function Test-ManagedLink([string]$Path) {
     if (-not $target) {
         return $false
     }
-    $managedRoot = [IO.Path]::GetFullPath((Join-Path $RepositoryDir "skills")) + [IO.Path]::DirectorySeparatorChar
-    return $target.StartsWith($managedRoot, [StringComparison]::OrdinalIgnoreCase)
+    $managedRoot = [IO.Path]::GetFullPath((Join-Path $RepositoryDir $SkillsRelativePath)) + [IO.Path]::DirectorySeparatorChar
+    $legacyManagedRoot = [IO.Path]::GetFullPath((Join-Path $RepositoryDir "skills")) + [IO.Path]::DirectorySeparatorChar
+    return $target.StartsWith($managedRoot, [StringComparison]::OrdinalIgnoreCase) -or
+        $target.StartsWith($legacyManagedRoot, [StringComparison]::OrdinalIgnoreCase)
 }
 
 function Backup-Destination([string]$AgentName, [string]$SkillName, [string]$Destination) {

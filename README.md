@@ -1,6 +1,20 @@
 # Skills Group
 
-A collection of reusable skills for Codex, Claude Code, Trae, and Trae CN.
+A Codex-native repository of reusable skills, with installers for Claude Code, Trae, and Trae CN.
+
+## Use directly in Codex
+
+Repository skills live in `.agents/skills/`, the native Codex repository scope. Open this repository (or any subdirectory) in Codex and the skills are discovered automatically; no user-level installation is required.
+
+Invoke a skill by typing `$skill-name`, or type `/skills` and select it. For example:
+
+```text
+$video-downloader
+```
+
+Codex does not expose repository skills as arbitrary `/skill-name` commands. `/skills` and `$skill-name` are the supported explicit invocation forms.
+
+Create every new repository-owned skill at `.agents/skills/<skill-name>/SKILL.md`. The project instructions in `AGENTS.md` keep future skill creation on this path.
 
 ## One-command install
 
@@ -79,14 +93,15 @@ Restart the agent if a newly installed or updated skill does not appear immediat
 
 | Skill | Description |
 | --- | --- |
-| [Changelog Generator](skills/changelog-generator) | Generate user-facing changelogs and release notes from git history, tags, PR summaries, issues, or raw change notes. |
-| [Content Research Writer](skills/content-research-writer) | Research, outline, draft, cite, adapt, and polish long-form or short-form content in a source-grounded workflow. |
-| [Developer Growth Analysis](skills/developer-growth-analysis) | Analyze recent Codex or development-assistant work history to identify strengths, growth areas, and focused next actions. |
-| [GPT Image 2](skills/gpt-image-2) | Generate or edit images with GPT Image 2 using local, host-native, or prompt-advisor workflows and structured templates. |
-| [Install Codex Chrome Extension](skills/install-codex-chrome-extension) | Install, unpack, validate, and troubleshoot the Codex Chrome Extension with the required official extension ID. |
-| [Mine Patent Points](skills/mine-patent-points) | Mine, assess, and prioritize patentable technical ideas from source code, architecture, requirements, retrospectives, and engineering discussions. |
-| [Video Downloader](skills/video-downloader) | Download videos and audio from yt-dlp supported websites with configurable quality, cookies, subtitles, and metadata. |
+| [Changelog Generator](.agents/skills/changelog-generator) | Generate user-facing changelogs and release notes from git history, tags, PR summaries, issues, or raw change notes. |
+| [Content Research Writer](.agents/skills/content-research-writer) | Research, outline, draft, cite, adapt, and polish long-form or short-form content in a source-grounded workflow. |
+| [Developer Growth Analysis](.agents/skills/developer-growth-analysis) | Analyze recent Codex or development-assistant work history to identify strengths, growth areas, and focused next actions. |
+| [GPT Image 2](.agents/skills/gpt-image-2) | Generate or edit images with GPT Image 2 using local, host-native, or prompt-advisor workflows and structured templates. |
+| [Huijin Tracker](.agents/skills/huijin-tracker) | Track Central Huijin public disclosures and holdings snapshots while preserving evidence boundaries between confirmed operations and reporting-period changes. |
+| [Install Codex Chrome Extension](.agents/skills/install-codex-chrome-extension) | Install, unpack, validate, and troubleshoot the Codex Chrome Extension with the required official extension ID. |
+| [Mine Patent Points](.agents/skills/mine-patent-points) | Mine, assess, and prioritize patentable technical ideas from source code, architecture, requirements, retrospectives, and engineering discussions. |
+| [Video Downloader](.agents/skills/video-downloader) | Download videos and audio from yt-dlp supported websites with configurable quality, cookies, subtitles, and metadata. |
 
 ## Manual install
 
-You can still install an individual skill without the installer. Copy one directory from `skills/` into the relevant agent directory listed above, then restart or reload the agent.
+You can still install an individual skill without the installer. Copy one directory from `.agents/skills/` into the relevant agent directory listed above, then restart or reload the agent.

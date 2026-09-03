@@ -11,6 +11,7 @@ REPOSITORY_REF="main"
 API_URL_DEFAULT="https://api.github.com/repos/$REPOSITORY/git/ref/heads/$REPOSITORY_REF"
 ARCHIVE_URL_DEFAULT="https://github.com/$REPOSITORY/archive"
 SUPPORTED_AGENTS="codex claude trae trae-cn"
+SKILLS_RELATIVE_PATH=".agents/skills"
 
 USER_HOME="${SKILLS_GROUP_USER_HOME:-$HOME}"
 CACHE_ROOT="${SKILLS_GROUP_HOME:-$USER_HOME/.skills-group}"
@@ -200,8 +201,8 @@ frontmatter_name() {
 
 validate_repository() {
   root="$1"
-  skills_root="$root/skills"
-  [ -d "$skills_root" ] || { error "repository does not contain skills/"; return 1; }
+  skills_root="$root/$SKILLS_RELATIVE_PATH"
+  [ -d "$skills_root" ] || { error "repository does not contain $SKILLS_RELATIVE_PATH/"; return 1; }
 
   names=""
   found=0
@@ -267,9 +268,9 @@ stage_repository() {
   mkdir -p "$STAGE_DIR/repository" || return 1
 
   if [ -n "$LOCAL_SOURCE" ]; then
-    [ -d "$LOCAL_SOURCE/skills" ] || { error "SKILLS_GROUP_SOURCE_ROOT has no skills/: $LOCAL_SOURCE"; return 1; }
-    mkdir -p "$STAGE_DIR/repository/skills" || return 1
-    cp -R "$LOCAL_SOURCE/skills"/. "$STAGE_DIR/repository/skills" || return 1
+    [ -d "$LOCAL_SOURCE/$SKILLS_RELATIVE_PATH" ] || { error "SKILLS_GROUP_SOURCE_ROOT has no $SKILLS_RELATIVE_PATH/: $LOCAL_SOURCE"; return 1; }
+    mkdir -p "$STAGE_DIR/repository/$SKILLS_RELATIVE_PATH" || return 1
+    cp -R "$LOCAL_SOURCE/$SKILLS_RELATIVE_PATH"/. "$STAGE_DIR/repository/$SKILLS_RELATIVE_PATH" || return 1
   else
     archive="$STAGE_DIR/repository.zip"
     archive_url="$ARCHIVE_URL/$REMOTE_SHA.zip"
@@ -348,11 +349,11 @@ ensure_cache() {
 
 skill_dir_for_name() {
   name="$1"
-  find "$REPOSITORY_DIR/skills" -type f -path "*/$name/SKILL.md" -not -path '*/node_modules/*' -print | head -n 1 | sed 's#/SKILL.md$##'
+  find "$REPOSITORY_DIR/$SKILLS_RELATIVE_PATH" -type f -path "*/$name/SKILL.md" -not -path '*/node_modules/*' -print | head -n 1 | sed 's#/SKILL.md$##'
 }
 
 all_skill_names() {
-  find "$REPOSITORY_DIR/skills" -type f -name SKILL.md -not -path '*/node_modules/*' -exec dirname {} \; | while IFS= read -r directory; do basename "$directory"; done | sort
+  find "$REPOSITORY_DIR/$SKILLS_RELATIVE_PATH" -type f -name SKILL.md -not -path '*/node_modules/*' -exec dirname {} \; | while IFS= read -r directory; do basename "$directory"; done | sort
 }
 
 resolved_skill_names() {
@@ -375,7 +376,8 @@ link_target() {
 is_managed_link() {
   target="$(link_target "$1" 2>/dev/null)" || return 1
   case "$target" in
-    "$REPOSITORY_DIR"/skills/*) return 0 ;;
+    "$REPOSITORY_DIR"/"$SKILLS_RELATIVE_PATH"/*) return 0 ;;
+    "$REPOSITORY_DIR"/skills/*) return 0 ;; # Legacy cache layout.
     *) return 1 ;;
   esac
 }
