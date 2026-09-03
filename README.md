@@ -97,9 +97,9 @@ Restart the agent if a newly installed or updated skill does not appear immediat
 | [Content Research Writer](.agents/skills/content-research-writer) | Research, outline, draft, cite, adapt, and polish long-form or short-form content in a source-grounded workflow. |
 | [Developer Growth Analysis](.agents/skills/developer-growth-analysis) | Analyze recent Codex or development-assistant work history to identify strengths, growth areas, and focused next actions. |
 | [GPT Image 2](.agents/skills/gpt-image-2) | Generate or edit images with GPT Image 2 using local, host-native, or prompt-advisor workflows and structured templates. |
-| [Huijin Tracker](.agents/skills/huijin-tracker) | Track Central Huijin public disclosures and holdings snapshots while preserving evidence boundaries between confirmed operations and reporting-period changes. |
 | [Install Codex Chrome Extension](.agents/skills/install-codex-chrome-extension) | Install, unpack, validate, and troubleshoot the Codex Chrome Extension with the required official extension ID. |
 | [Mine Patent Points](.agents/skills/mine-patent-points) | Mine, assess, and prioritize patentable technical ideas from source code, architecture, requirements, retrospectives, and engineering discussions. |
+| [National Team Position](.agents/skills/national-team-position) | Estimate national-team broad-base ETF positioning from Shanghai Stock Exchange ETF share changes and render comparison charts. |
 | [Video Downloader](.agents/skills/video-downloader) | Download videos and audio from yt-dlp supported websites with configurable quality, cookies, subtitles, and metadata. |
 
 ## Manual install
