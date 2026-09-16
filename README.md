@@ -101,6 +101,7 @@ Restart the agent if a newly installed or updated skill does not appear immediat
 | [Mine Patent Points](.agents/skills/mine-patent-points) | Mine, assess, and prioritize patentable technical ideas from source code, architecture, requirements, retrospectives, and engineering discussions. |
 | [National Team Position](.agents/skills/national-team-position) | Estimate national-team broad-base ETF positioning from Shanghai Stock Exchange ETF share changes and render comparison charts. |
 | [Video Downloader](.agents/skills/video-downloader) | Download videos and audio from yt-dlp supported websites with configurable quality, cookies, subtitles, and metadata. |
+| [WeRead Lottery & Reading Check-in](.agents/skills/weread-member-lottery) | Use the local WeRead app for a free member lottery or reading check-in: turn a few book pages, restore and verify the original reading position, and report check-in status only when confirmed. |
 
 ## Manual install
 

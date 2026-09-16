@@ -1,0 +1,4 @@
+interface:
+  display_name: "微信读书抽奖与阅读签到"
+  short_description: "操作本地微信读书会员抽奖和书架阅读签到，翻阅后核对并恢复原阅读位置"
+  default_prompt: "使用 $weread-member-lottery 打开本地微信读书，执行免费会员抽奖按钮点击，不等待奖励结果；再从书架选一本书翻阅几页用于阅读签到，随后恢复并验证原阅读位置，如实报告签到是否确认。"
