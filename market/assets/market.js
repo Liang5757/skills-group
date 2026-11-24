@@ -67,6 +67,7 @@ const preview = document.querySelector('#preview');
 if (preview) {
   const status = document.querySelector('#file-status');
   const fileTree = document.querySelector('.file-tree');
+  const filePanel = fileTree.closest('details');
   let currentPath = window.location.pathname;
   let request;
 
@@ -144,12 +145,15 @@ if (preview) {
       links.get(currentPath)?.removeAttribute('aria-current');
       selected.setAttribute('aria-current', 'page');
       currentPath = url.pathname;
-      for (let folder = selected.closest('details'); folder; folder = folder.parentElement.closest('details')) {
+      for (let folder = selected.closest('details'); folder && fileTree.contains(folder); folder = folder.parentElement.closest('details')) {
         folder.open = true;
       }
       showMarkdownModes();
       revealPreview();
-      if (focusTree) selected.focus({ preventScroll: true });
+      if (focusTree) {
+        const focusTarget = filePanel.open ? selected : filePanel.querySelector('summary');
+        focusTarget.focus({ preventScroll: true });
+      }
       status.textContent = `已打开 ${preview.querySelector('#preview-title').textContent}`;
     } catch {
       if (!controller.signal.aborted) window.location.replace(link.href);

@@ -147,10 +147,13 @@ export function skillPage(skill, file, preview, site) {
       </aside>
     </div>
     <div class="detail-grid">
-      <nav class="file-panel" aria-labelledby="file-title">
-        <h2 id="file-title">技能文件</h2>
-        <div class="file-tree">${fileTree(skill.files, file)}</div>
-      </nav>
+      <details class="file-panel" open>
+        <summary class="file-panel-header">
+          <span id="file-title">技能文件</span>
+          <span class="file-panel-toggle"><span class="expand-label">展开</span><span class="collapse-label">收起</span></span>
+        </summary>
+        <nav class="file-tree" aria-labelledby="file-title">${fileTree(skill.files, file)}</nav>
+      </details>
       <span class="visually-hidden" id="file-status" role="status"></span>
       <article class="preview" id="preview" aria-labelledby="preview-title">
         <header class="preview-bar">
