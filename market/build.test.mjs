@@ -29,7 +29,8 @@ test('the market follows tracked skill files across builds', (t) => {
   const entry = (name, version, body) => `---\nname: ${name}\ndescription: Example skill\nmetadata:\n  version: ${version}\n---\n${body}`;
 
   write('example/SKILL.md', entry('example', '1.0.0', '# Example\n\n[Guide](notes/%E4%B8%AD%E6%96%87%20%231.md)'));
-  const guide = write('example/notes/中文 #1.md', '## First draft');
+  const guide = write('example/notes/中文 #1.md', '## First draft\n\n```bash\necho "example"\n```');
+  write('example/parse.py', 'def greet():\n    return "hello"\n');
   write('example/.settings', '<script>doNotRun()</script>');
   write('example/preview.png', readFileSync(join(market, 'assets', 'favicon.png')));
   write('example/data.bin', Buffer.from([0, 255]));
@@ -51,6 +52,9 @@ test('the market follows tracked skill files across builds', (t) => {
   const guidePage = page('skills', 'example', 'files', 'notes', '中文 #1.md');
   assert.match(guidePage, /<details open>/);
   assert.match(guidePage, /<h4>First draft<\/h4>/);
+  assert.match(guidePage, /<code class="language-bash"><span class="hljs-built_in">echo<\/span>/);
+  assert.match(guidePage, /<pre class="source-code"[^>]* hidden><code><span class="hljs-section">## First draft<\/span>/);
+  assert.match(page('skills', 'example', 'files', 'parse.py'), /<span class="hljs-keyword">def<\/span>/);
   assert.match(page('skills', 'example', 'files', '.settings'), /&lt;script&gt;doNotRun\(\)&lt;\/script&gt;/);
   assert.match(page('skills', 'example', 'files', 'preview.png'), /src="\.\/image\.png\?v=test-revision"/);
   assert.match(page('skills', 'example', 'files', 'data.bin'), /在 GitHub 上查看/);

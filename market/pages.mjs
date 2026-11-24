@@ -103,12 +103,16 @@ function fileTree(files, current, depth = 0) {
   return `<ul>${fileLinks.join('')}${folderLinks.join('')}</ul>`;
 }
 
+function sourceCode(file, content, hidden = false) {
+  return `<pre class="source-code" tabindex="0" aria-label="${escapeHtml(file.path)}"${hidden ? ' hidden' : ''}><code>${content}</code></pre>`;
+}
+
 function filePreview(file, preview) {
   switch (preview.kind) {
     case 'markdown':
-      return `<div class="markdown">${preview.content}</div>`;
+      return `<div class="markdown">${preview.content}</div>${sourceCode(file, preview.source, true)}`;
     case 'text':
-      return `<pre class="source-code" tabindex="0" aria-label="${escapeHtml(file.path)}"><code>${escapeHtml(preview.content)}</code></pre>`;
+      return sourceCode(file, preview.content);
     case 'image':
       return `<div class="image-preview"><img src="${escapeHtml(preview.url)}" alt="${escapeHtml(file.path)}"></div>`;
     default:
@@ -147,10 +151,17 @@ export function skillPage(skill, file, preview, site) {
         <h2 id="file-title">技能文件</h2>
         <div class="file-tree">${fileTree(skill.files, file)}</div>
       </nav>
-      <article class="preview" id="preview" aria-labelledby="preview-title" tabindex="-1">
+      <span class="visually-hidden" id="file-status" role="status"></span>
+      <article class="preview" id="preview" aria-labelledby="preview-title">
         <header class="preview-bar">
           <h2 id="preview-title"><code>${escapeHtml(file.path)}</code></h2>
-          <a class="source-link" href="${escapeHtml(file.source)}">在 GitHub 查看 <span aria-hidden="true">↗</span></a>
+          <div class="preview-actions">
+            ${preview.kind === 'markdown' ? `<div class="preview-modes" role="group" aria-label="Markdown 查看方式" hidden>
+              <button type="button" data-markdown-mode="preview" aria-pressed="true">预览</button>
+              <button type="button" data-markdown-mode="source" aria-pressed="false">源码</button>
+            </div>` : ''}
+            <a class="source-link" href="${escapeHtml(file.source)}">在 GitHub 查看 <span aria-hidden="true">↗</span></a>
+          </div>
         </header>
         ${filePreview(file, preview)}
       </article>

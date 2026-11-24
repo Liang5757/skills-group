@@ -122,7 +122,7 @@ You can still install an individual skill without the installer. Copy one direct
 
 ## Develop the Skill Market
 
-The catalog, file tree, and previews are generated from Git-tracked files under `.agents/skills/`. Each skill starts on its `SKILL.md`, and Markdown, plain text, source code, and common image formats can be previewed in the browser. Large text files and other binary formats link to GitHub. Update `metadata.version` in the skill's YAML frontmatter when releasing a new version.
+The catalog, file tree, and previews are generated from Git-tracked files under `.agents/skills/`. Each skill starts on its `SKILL.md`, with previews for Markdown, text, code, and common images. Source files and Markdown code blocks are highlighted at build time, and Markdown can also be viewed as highlighted source. File switches replace the current browser history entry. Large text files and other binary formats link to GitHub. Update `metadata.version` in the skill's YAML frontmatter when releasing a new version.
 
 ```bash
 npm ci --prefix market

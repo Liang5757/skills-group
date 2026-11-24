@@ -1,7 +1,8 @@
 import { execFileSync } from 'node:child_process';
 import { copyFileSync, cpSync, lstatSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import hljs from 'highlight.js';
 import MarkdownIt from 'markdown-it';
 import { parse } from 'yaml';
 import { catalogPage, skillPage } from './pages.mjs';
@@ -15,11 +16,18 @@ const ref = process.env.GITHUB_SHA || 'main';
 const github = `https://github.com/${repository}`;
 const raw = `https://raw.githubusercontent.com/${repository}/${ref}`;
 const site = { github, assetQuery: process.env.GITHUB_SHA ? `?v=${encodeURIComponent(ref)}` : '' };
-const markdown = new MarkdownIt({ html: false });
+const markdown = new MarkdownIt({ html: false, highlight: highlightCode });
 const decoder = new TextDecoder('utf-8', { fatal: true });
 const textPreviewLimit = 512 * 1024;
 const imageExtension = /\.(?:avif|gif|jpe?g|png|webp)$/i;
 const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
+const languageAliases = new Map([['mjs', 'javascript'], ['cjs', 'javascript'], ['ps1', 'powershell']]);
+
+function highlightCode(code, language = '') {
+  const name = language.toLowerCase();
+  if (!hljs.getLanguage(name)) return markdown.utils.escapeHtml(code);
+  return hljs.highlight(code, { language: name, ignoreIllegals: true }).value;
+}
 
 function previewLink(target, env, image) {
   if (!target || /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(target)) return target;
@@ -114,17 +122,22 @@ function readSkill(folder, entries) {
     command: `npx -y skills add ${repository} --skill ${name}`,
     files,
     routes: new Map(files.map((file) => [`/${file.encodedPath}`, file])),
-    entrypointBody: document.slice(frontmatter[0].length),
+    entrypoint: document,
+    bodyOffset: frontmatter[0].length,
   };
 }
 
-function renderMarkdown(content, file, routes) {
+function renderMarkdown(source, file, routes, bodyOffset = 0) {
   const directory = file.encodedPath.slice(0, file.encodedPath.lastIndexOf('/') + 1);
-  return { kind: 'markdown', content: markdown.render(content, { directory, root: file.root, routes }) };
+  return {
+    kind: 'markdown',
+    content: markdown.render(source.slice(bodyOffset), { directory, root: file.root, routes }),
+    source: highlightCode(source, 'markdown'),
+  };
 }
 
 function readPreview(skill, file, page) {
-  if (file.path === 'SKILL.md') return renderMarkdown(skill.entrypointBody, file, skill.routes);
+  if (file.path === 'SKILL.md') return renderMarkdown(skill.entrypoint, file, skill.routes, skill.bodyOffset);
   const sourcePath = join(repositoryDir, file.repositoryPath);
   if (file.imageName) {
     copyFileSync(sourcePath, join(page, file.imageName));
@@ -143,7 +156,8 @@ function readPreview(skill, file, page) {
     return { kind: 'unavailable', message: '此文件格式可在 GitHub 上查看。' };
   }
   if (/\.(?:md|markdown)$/i.test(file.path)) return renderMarkdown(content, file, skill.routes);
-  return { kind: 'text', content };
+  const extension = extname(file.path).slice(1).toLowerCase();
+  return { kind: 'text', content: highlightCode(content, languageAliases.get(extension) ?? extension) };
 }
 
 const skills = trackedSkills().map(([name, files]) => readSkill(name, files));
