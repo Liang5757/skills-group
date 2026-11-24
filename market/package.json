@@ -1,0 +1,12 @@
+{
+  "name": "skills-group-market",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "markdown-it": "^14.1.0",
+    "yaml": "^2.8.0"
+  }
+}

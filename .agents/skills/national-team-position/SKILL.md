@@ -2,6 +2,8 @@
 name: national-team-position
 description: 通过上交所宽基 ETF 份额变化估计中国 A 股“国家队”仓位趋势，并生成沪深300、上证50、中证500、中证1000、中证A500和科创50的份额与指数图。Use for 国家队仓位趋势、宽基 ETF 份额变化或中央汇金 ETF 代理指标；不用于声称已证实的汇金实时交易或完整持仓。
 license: MIT
+metadata:
+  version: "0.1.0"
 ---
 
 # 国家队持仓估计（全宽基版）

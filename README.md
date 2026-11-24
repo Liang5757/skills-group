@@ -2,6 +2,18 @@
 
 A Codex-native repository of reusable skills, with installers for Claude Code, Trae, and Trae CN.
 
+## Skill Market
+
+[Browse the Skill Market](https://liang5757.github.io/skills-group/) to see skill descriptions, versions, Markdown previews, and install commands.
+
+To install a single skill, run this from the target project with Node.js 22.20 or later, then select the tools to install it for:
+
+```bash
+npx -y skills add Liang5757/skills-group --skill video-downloader
+```
+
+Replace `video-downloader` with the skill name. The command installs from the repository's default branch. Add `--global` for a user-level install.
+
 ## Use directly in Codex
 
 Repository skills live in `.agents/skills/`, the native Codex repository scope. Open this repository (or any subdirectory) in Codex and the skills are discovered automatically; no user-level installation is required.
@@ -102,7 +114,20 @@ Restart the agent if a newly installed or updated skill does not appear immediat
 | [National Team Position](.agents/skills/national-team-position) | Estimate national-team broad-base ETF positioning from Shanghai Stock Exchange ETF share changes and render comparison charts. |
 | [Video Downloader](.agents/skills/video-downloader) | Download videos and audio from yt-dlp supported websites with configurable quality, cookies, subtitles, and metadata. |
 | [WeRead Lottery & Reading Check-in](.agents/skills/weread-member-lottery) | Use the local WeRead app for a free member lottery or reading check-in: turn a few book pages, restore and verify the original reading position, and report check-in status only when confirmed. |
+| [Write Invention Disclosure](.agents/skills/write-invention-disclosure) | Draft and review Chinese invention disclosures using source code, diagrams, product requirements, and technical evidence. |
 
 ## Manual install
 
 You can still install an individual skill without the installer. Copy one directory from `.agents/skills/` into the relevant agent directory listed above, then restart or reload the agent.
+
+## Develop the Skill Market
+
+The catalog is generated from `.agents/skills/*/SKILL.md`. Update `metadata.version` in the skill's YAML frontmatter when releasing a new version. The site displays the declared version, and the install command selects the skill by name.
+
+```bash
+npm ci --prefix market
+npm run build --prefix market
+python3 -m http.server 8000 --directory market/dist
+```
+
+Open `http://localhost:8000/` to preview the generated site. The GitHub Pages publishing source is **GitHub Actions**. The workflow rebuilds and deploys when changes to the skills or site land on `main`.
