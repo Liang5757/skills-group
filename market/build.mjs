@@ -1,4 +1,5 @@
-import { cpSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { copyFileSync, cpSync, lstatSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import MarkdownIt from 'markdown-it';
@@ -6,17 +7,29 @@ import { parse } from 'yaml';
 import { catalogPage, skillPage } from './pages.mjs';
 
 const market = fileURLToPath(new URL('./', import.meta.url));
-const skillsDir = join(market, '..', '.agents', 'skills');
+const repositoryDir = join(market, '..');
+const skillsDir = '.agents/skills';
 const dist = join(market, 'dist');
 const repository = process.env.GITHUB_REPOSITORY || 'Liang5757/skills-group';
 const ref = process.env.GITHUB_SHA || 'main';
 const github = `https://github.com/${repository}`;
 const raw = `https://raw.githubusercontent.com/${repository}/${ref}`;
+const site = { github, assetQuery: process.env.GITHUB_SHA ? `?v=${encodeURIComponent(ref)}` : '' };
 const markdown = new MarkdownIt({ html: false });
+const decoder = new TextDecoder('utf-8', { fatal: true });
+const textPreviewLimit = 512 * 1024;
+const imageExtension = /\.(?:avif|gif|jpe?g|png|webp)$/i;
+const encodePath = (path) => path.split('/').map(encodeURIComponent).join('/');
 
-function repositoryLink(target, directory, base) {
+function previewLink(target, env, image) {
   if (!target || /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(target)) return target;
-  const resolved = new URL(target, `https://repo.invalid/${directory}/`);
+  const resolved = new URL(target, `https://repo.invalid/${env.directory}`);
+  const destination = env.routes.get(resolved.pathname);
+  if (image && destination?.imageName) return `${env.root}${destination.href}${destination.imageName}${site.assetQuery}`;
+  if (!image && destination && !resolved.search && !resolved.hash) {
+    return `${env.root}${destination.href}#preview`;
+  }
+  const base = image ? raw : `${github}/blob/${ref}`;
   return `${base}${resolved.pathname}${resolved.search}${resolved.hash}`;
 }
 
@@ -25,8 +38,7 @@ for (const [rule, attribute] of [['link_open', 'href'], ['image', 'src']]) {
     renderer.renderToken(tokens, index, options));
   markdown.renderer.rules[rule] = (tokens, index, options, env, renderer) => {
     const token = tokens[index];
-    const base = rule === 'image' ? raw : `${github}/blob/${ref}`;
-    token.attrSet(attribute, repositoryLink(token.attrGet(attribute), env.directory, base));
+    token.attrSet(attribute, previewLink(token.attrGet(attribute), env, rule === 'image'));
     return render(tokens, index, options, env, renderer);
   };
 }
@@ -39,8 +51,29 @@ for (const rule of ['heading_open', 'heading_close']) {
   };
 }
 
-function readSkill(folder) {
-  const document = readFileSync(join(skillsDir, folder, 'SKILL.md'), 'utf8');
+function trackedSkills() {
+  const files = execFileSync('git', ['ls-files', '-z', '--', `${skillsDir}/`], {
+    cwd: repositoryDir,
+    encoding: 'utf8',
+  }).split('\0').filter(Boolean);
+  const skills = new Map();
+  for (const path of files) {
+    const relative = path.slice(skillsDir.length + 1);
+    const slash = relative.indexOf('/');
+    if (slash < 0) continue;
+    const stat = lstatSync(join(repositoryDir, path), { throwIfNoEntry: false });
+    if (!stat?.isFile()) continue;
+
+    const name = relative.slice(0, slash);
+    if (!skills.has(name)) skills.set(name, []);
+    skills.get(name).push({ path: relative.slice(slash + 1), size: stat.size });
+  }
+  return Array.from(skills).filter(([, files]) => files.some(({ path }) => path === 'SKILL.md'));
+}
+
+function readSkill(folder, entries) {
+  const directory = `${skillsDir}/${folder}`;
+  const document = readFileSync(join(repositoryDir, directory, 'SKILL.md'), 'utf8');
   const frontmatter = document.match(/^\uFEFF?---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/);
   if (!frontmatter) throw new Error(`${folder}/SKILL.md is missing YAML frontmatter`);
 
@@ -53,31 +86,79 @@ function readSkill(folder) {
     throw new Error(`${folder}/SKILL.md needs a description`);
   }
 
-  const directory = `.agents/skills/${folder}`;
+  const files = entries.map(({ path, size }) => {
+    const entrypoint = path === 'SKILL.md';
+    const parts = path.split('/');
+    const route = ['skills', name];
+    if (!entrypoint) route.push('files', ...parts);
+    const repositoryPath = `${directory}/${path}`;
+    const encodedPath = encodePath(repositoryPath);
+    const extension = path.match(imageExtension)?.[0].toLowerCase();
+    return {
+      path,
+      parts,
+      size,
+      route,
+      repositoryPath,
+      encodedPath,
+      href: `${encodePath(route.join('/'))}/`,
+      root: '../'.repeat(route.length),
+      source: `${github}/blob/${ref}/${encodedPath}`,
+      imageName: extension ? `image${extension}` : null,
+    };
+  });
   return {
     name,
     description: description.trim(),
     version: String(metadata?.version ?? '').trim(),
     command: `npx -y skills add ${repository} --skill ${name}`,
-    source: `${github}/blob/${ref}/${directory}/SKILL.md`,
-    preview: markdown.render(document.slice(frontmatter[0].length), { directory }),
+    files,
+    routes: new Map(files.map((file) => [`/${file.encodedPath}`, file])),
+    entrypointBody: document.slice(frontmatter[0].length),
   };
 }
 
-const skills = readdirSync(skillsDir, { withFileTypes: true })
-  .filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
-  .map((entry) => entry.name)
-  .sort()
-  .map(readSkill);
+function renderMarkdown(content, file, routes) {
+  const directory = file.encodedPath.slice(0, file.encodedPath.lastIndexOf('/') + 1);
+  return { kind: 'markdown', content: markdown.render(content, { directory, root: file.root, routes }) };
+}
+
+function readPreview(skill, file, page) {
+  if (file.path === 'SKILL.md') return renderMarkdown(skill.entrypointBody, file, skill.routes);
+  const sourcePath = join(repositoryDir, file.repositoryPath);
+  if (file.imageName) {
+    copyFileSync(sourcePath, join(page, file.imageName));
+    return { kind: 'image', url: `./${file.imageName}${site.assetQuery}` };
+  }
+  if (file.size > textPreviewLimit) return { kind: 'unavailable', message: '文件较大，可在 GitHub 上查看。' };
+
+  const bytes = readFileSync(sourcePath);
+  let content;
+  try {
+    content = decoder.decode(bytes);
+  } catch {
+    return { kind: 'unavailable', message: '此文件格式可在 GitHub 上查看。' };
+  }
+  if (/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(content)) {
+    return { kind: 'unavailable', message: '此文件格式可在 GitHub 上查看。' };
+  }
+  if (/\.(?:md|markdown)$/i.test(file.path)) return renderMarkdown(content, file, skill.routes);
+  return { kind: 'text', content };
+}
+
+const skills = trackedSkills().map(([name, files]) => readSkill(name, files));
 
 rmSync(dist, { recursive: true, force: true });
 mkdirSync(dist, { recursive: true });
 cpSync(join(market, 'assets'), join(dist, 'assets'), { recursive: true });
 writeFileSync(join(dist, '.nojekyll'), '');
-writeFileSync(join(dist, 'index.html'), catalogPage(skills, github));
+writeFileSync(join(dist, 'index.html'), catalogPage(skills, site));
 for (const skill of skills) {
-  const page = join(dist, 'skills', skill.name);
-  mkdirSync(page, { recursive: true });
-  writeFileSync(join(page, 'index.html'), skillPage(skill, github));
+  for (const file of skill.files) {
+    const page = join(dist, ...file.route);
+    mkdirSync(page, { recursive: true });
+    writeFileSync(join(page, 'index.html'), skillPage(skill, file, readPreview(skill, file, page), site));
+  }
 }
-console.log(`Built Skill Market with ${skills.length} skills.`);
+const previewCount = skills.reduce((count, skill) => count + skill.files.length, 0);
+console.log(`Built Skill Market with ${skills.length} skills and ${previewCount} file pages.`);
