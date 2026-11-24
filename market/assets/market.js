@@ -62,12 +62,14 @@ if (copy) {
   });
 }
 
-const preview = document.querySelector('#preview');
+const viewer = document.querySelector('#preview');
 
-if (preview) {
+if (viewer) {
   const status = document.querySelector('#file-status');
-  const fileTree = document.querySelector('.file-tree');
+  const fileTree = viewer.querySelector('.file-tree');
   const filePanel = fileTree.closest('details');
+  const toolbar = viewer.querySelector('.preview-bar');
+  const preview = viewer.querySelector('.preview');
   let currentPath = window.location.pathname;
   let request;
 
@@ -82,13 +84,13 @@ if (preview) {
   }
 
   function showMarkdownModes() {
-    const modes = preview.querySelector('.preview-modes');
+    const modes = toolbar.querySelector('.preview-modes');
     if (modes) modes.hidden = false;
   }
 
   function revealPreview() {
-    const { top } = preview.getBoundingClientRect();
-    if (top < 0 || top > window.innerHeight - 100) preview.scrollIntoView({ block: 'start' });
+    const { top } = viewer.getBoundingClientRect();
+    if (top < 0 || top > window.innerHeight - 100) viewer.scrollIntoView({ block: 'start' });
   }
 
   // The page shell keeps its original links when the address changes to a nested file.
@@ -134,14 +136,17 @@ if (preview) {
       const page = document.createElement('template');
       page.innerHTML = await response.text();
       if (controller.signal.aborted) return;
-      const next = page.content.querySelector('#preview');
-      if (!next) throw new Error('Preview is missing');
+      const nextToolbar = page.content.querySelector('#preview .preview-bar');
+      const nextPreview = page.content.querySelector('#preview .preview');
+      if (!nextToolbar || !nextPreview) throw new Error('Preview is missing');
 
-      resolveLinks(next, response.url);
+      resolveLinks(nextToolbar, response.url);
+      resolveLinks(nextPreview, response.url);
       const focusTree = preview.contains(link) && event.detail === 0;
       window.history.replaceState(window.history.state, '', url);
       document.title = page.content.querySelector('title').textContent;
-      preview.replaceChildren(...next.childNodes);
+      toolbar.replaceChildren(...nextToolbar.childNodes);
+      preview.replaceChildren(...nextPreview.childNodes);
       links.get(currentPath)?.removeAttribute('aria-current');
       selected.setAttribute('aria-current', 'page');
       currentPath = url.pathname;
@@ -154,7 +159,7 @@ if (preview) {
         const focusTarget = filePanel.open ? selected : filePanel.querySelector('summary');
         focusTarget.focus({ preventScroll: true });
       }
-      status.textContent = `已打开 ${preview.querySelector('#preview-title').textContent}`;
+      status.textContent = `已打开 ${toolbar.querySelector('#preview-title').textContent}`;
     } catch {
       if (!controller.signal.aborted) window.location.replace(link.href);
     } finally {

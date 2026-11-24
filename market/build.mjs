@@ -15,7 +15,7 @@ const repository = process.env.GITHUB_REPOSITORY || 'Liang5757/skills-group';
 const ref = process.env.GITHUB_SHA || 'main';
 const github = `https://github.com/${repository}`;
 const raw = `https://raw.githubusercontent.com/${repository}/${ref}`;
-const site = { github, assetQuery: process.env.GITHUB_SHA ? `?v=${encodeURIComponent(ref)}` : '' };
+const site = { github, repository, assetQuery: process.env.GITHUB_SHA ? `?v=${encodeURIComponent(ref)}` : '' };
 const markdown = new MarkdownIt({ html: false, highlight: highlightCode });
 const decoder = new TextDecoder('utf-8', { fatal: true });
 const textPreviewLimit = 512 * 1024;
@@ -120,6 +120,7 @@ function readSkill(folder, entries) {
     description: description.trim(),
     version: String(metadata?.version ?? '').trim(),
     command: `npx -y skills add ${repository} --skill ${name}`,
+    source: `${github}/tree/${ref}/${directory}`,
     files,
     routes: new Map(files.map((file) => [`/${file.encodedPath}`, file])),
     entrypoint: document,

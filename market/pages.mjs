@@ -94,7 +94,8 @@ function fileTree(files, current, depth = 0) {
   const fileLinks = visibleFiles.map((file) => {
     const href = escapeHtml(`${current.root}${file.href}#preview`);
     const active = file.path === current.path ? ' aria-current="page"' : '';
-    return `<li><a href="${href}"${active}>${escapeHtml(file.parts[depth])}</a></li>`;
+    const label = escapeHtml(file.parts[depth]);
+    return `<li><a href="${href}" title="${label}"${active}>${label}</a></li>`;
   });
   const folderLinks = Array.from(folders, ([folder, children]) => {
     const open = children.some((file) => file.path === current.path) ? ' open' : '';
@@ -128,36 +129,17 @@ export function skillPage(skill, file, preview, site) {
     root: file.root,
     content: `<main class="frame detail" id="main">
     <nav aria-label="页面导航"><a class="back-link" href="${file.root}"><span aria-hidden="true">←</span> 全部技能</a></nav>
-    <div class="skill-header">
-      <header class="skill-summary">
-        <div class="skill-heading">
-          <h1>${escapeHtml(skill.name)}</h1>
-          ${versionBadge(skill.version)}
-        </div>
-        <p>${escapeHtml(skill.description)}</p>
-      </header>
-      <aside class="install-panel" aria-labelledby="install-title">
-        <h2 id="install-title">安装指引</h2>
-        <p>在目标项目的终端运行命令。需要 Node.js 22.20 或更新版本。</p>
-        <div class="command-panel">
-          <pre><code id="install-command">${escapeHtml(skill.command)}</code></pre>
-          <button class="copy-button" id="copy-command" type="button" hidden>复制命令</button>
-        </div>
-        <span class="visually-hidden" id="copy-status" role="status"></span>
-      </aside>
-    </div>
+    <header class="skill-summary">
+      <h1>${escapeHtml(skill.name)}</h1>
+      <p>${escapeHtml(skill.description)}</p>
+    </header>
     <div class="detail-grid">
-      <details class="file-panel" open>
-        <summary class="file-panel-header">
-          <span id="file-title">技能文件</span>
-          <span class="file-panel-toggle"><span class="expand-label">展开</span><span class="collapse-label">收起</span></span>
-        </summary>
-        <nav class="file-tree" aria-labelledby="file-title">${fileTree(skill.files, file)}</nav>
-      </details>
-      <span class="visually-hidden" id="file-status" role="status"></span>
-      <article class="preview" id="preview" aria-labelledby="preview-title">
+      <section class="file-viewer" id="preview" aria-labelledby="preview-title">
         <header class="preview-bar">
-          <h2 id="preview-title"><code>${escapeHtml(file.path)}</code></h2>
+          <div class="preview-file-heading">
+            <h2 id="preview-title"><code>${escapeHtml(file.path)}</code></h2>
+            ${versionBadge(skill.version)}
+          </div>
           <div class="preview-actions">
             ${preview.kind === 'markdown' ? `<div class="preview-modes" role="group" aria-label="Markdown 查看方式" hidden>
               <button type="button" data-markdown-mode="preview" aria-pressed="true">预览</button>
@@ -166,8 +148,36 @@ export function skillPage(skill, file, preview, site) {
             <a class="source-link" href="${escapeHtml(file.source)}">在 GitHub 查看 <span aria-hidden="true">↗</span></a>
           </div>
         </header>
-        ${filePreview(file, preview)}
-      </article>
+        <div class="viewer-body">
+          <details class="file-panel" open>
+            <summary class="file-panel-header" title="展开或收起技能文件">
+              <span class="file-panel-icon" aria-hidden="true"></span>
+              <span class="expand-label visually-hidden">展开技能文件</span>
+              <span class="collapse-label visually-hidden">收起技能文件</span>
+            </summary>
+            <nav class="file-tree" aria-label="技能文件">${fileTree(skill.files, file)}</nav>
+          </details>
+          <article class="preview" aria-labelledby="preview-title">
+            ${filePreview(file, preview)}
+          </article>
+        </div>
+      </section>
+      <span class="visually-hidden" id="file-status" role="status"></span>
+      <aside class="skill-sidebar" aria-label="技能信息">
+        <section class="skill-info" aria-labelledby="source-title">
+          <h2 id="source-title">技能来源</h2>
+          <a class="source-link" href="${escapeHtml(skill.source)}">${escapeHtml(site.repository)} <span aria-hidden="true">↗</span></a>
+        </section>
+        <section class="skill-info install-panel" aria-labelledby="install-title">
+          <h2 id="install-title">安装指引</h2>
+          <p>在目标项目的终端运行命令。需要 Node.js 22.20 或更新版本。</p>
+          <div class="command-panel">
+            <pre><code id="install-command">${escapeHtml(skill.command)}</code></pre>
+            <button class="copy-button" id="copy-command" type="button" hidden>复制命令</button>
+          </div>
+          <span class="visually-hidden" id="copy-status" role="status"></span>
+        </section>
+      </aside>
     </div>
   </main>`,
   });
