@@ -1,0 +1,26 @@
+.pagination,
+.pageControls,
+.pageJump {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.pagination {
+  justify-content: center;
+  gap: 12px 22px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.pageInput {
+  width: 64px;
+}
+.pageStatus,
+.pageLabel {
+  color: var(--muted);
+  font-size: 13px;
+}
+.pageStatus {
+  font-variant-numeric: tabular-nums;
+}

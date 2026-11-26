@@ -1,0 +1,68 @@
+.fileViewer {
+  overflow: clip;
+  scroll-margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--paper);
+  box-shadow: 0 12px 26px var(--viewer-shadow);
+}
+.viewerBody {
+  display: grid;
+  grid-template-columns: minmax(0, 214px) minmax(0, 1fr);
+  min-height: 340px;
+}
+.viewerBody:has(> .treePanel:not([open])) {
+  grid-template-columns: 44px minmax(0, 1fr);
+}
+.preview {
+  min-width: 0;
+  background: var(--code);
+}
+.previewBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding: 12px clamp(12px, 3vw, 17px);
+  border-bottom: 1px solid var(--line);
+  background: var(--toolbar);
+}
+.previewFileHeading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 9px;
+}
+.previewFileHeading::before {
+  content: '';
+  flex: none;
+  width: 10px;
+  height: 12px;
+  border: 1px solid var(--muted);
+  border-radius: 2px;
+}
+.previewTitle {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  font: 700 14px/1.4 var(--mono);
+}
+.previewPath {
+  font: inherit;
+}
+.previewActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+@media (max-width: 560px) {
+  .viewerBody {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+  .viewerBody:has(> .treePanel[open]) > :is(.treePanel, .preview) {
+    grid-column: 1 / -1;
+  }
+}

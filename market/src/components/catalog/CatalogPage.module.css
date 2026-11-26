@@ -1,0 +1,134 @@
+.catalogHeading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 23px;
+}
+.pageTitle {
+  margin: 0;
+  font-size: clamp(34px, 4vw, 46px);
+  line-height: 1.12;
+  letter-spacing: -0.027em;
+}
+.pageDescription {
+  margin: 13px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(358px, 46%);
+  min-width: 205px;
+  padding: 0 13px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+.searchIcon {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border: 1.5px solid var(--muted);
+  border-radius: 50%;
+  position: relative;
+  margin-right: 3px;
+}
+.searchIcon::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  bottom: -2px;
+  width: 5px;
+  height: 1.5px;
+  background: var(--muted);
+  transform: rotate(45deg);
+}
+.searchInput {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+}
+.searchInput::placeholder {
+  color: var(--muted);
+}
+
+.catalogTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 15px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.skillsTitle {
+  margin: 0;
+  font-size: 17px;
+  scroll-margin-top: 16px;
+}
+.skillCount {
+  color: var(--muted);
+  font: 12px/1.4 var(--mono);
+}
+.skillGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.emptyState {
+  text-align: center;
+  padding: 32px 16px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  color: var(--muted);
+}
+.emptyMessage {
+  margin: 0 0 12px;
+}
+.emptyMessage:last-child {
+  margin-bottom: 0;
+}
+.textButton {
+  border: 0;
+  padding: 2px 4px;
+  background: transparent;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .skillGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .catalogHeading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .search {
+    width: 100%;
+    min-width: 0;
+  }
+  .skillGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

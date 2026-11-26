@@ -1,0 +1,58 @@
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --page: #181715;
+  --header: #1e1d1a;
+  --paper: #24221e;
+  --toolbar: #25231f;
+  --code: #1a1917;
+  --ink: #f2ebde;
+  --muted: #c4b79f;
+  --line: #474035;
+  --accent: #e7b660;
+  --accent-hover: #f6ce87;
+  --accent-ink: #1d170e;
+  --tint: #3b3122;
+  --focus-ring: #e8b66026;
+  --card-hover-border: #907347;
+  --card-hover: #2c2720;
+  --install-surface: #29261f;
+  --viewer-shadow: #0003;
+  --overlay-shadow: #0007;
+  --code-gutter: #a99c86;
+  --syntax-comment: #b3a690;
+  --syntax-keyword: #e9abd8;
+  --syntax-string: #c5d896;
+  --syntax-number: #f5c384;
+  --syntax-name: #afc9de;
+  --syntax-meta: #f1a191;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --page: #f5f2eb;
+  --header: #fcfaf5;
+  --paper: #fffdf8;
+  --toolbar: #f1ece2;
+  --code: #faf7f0;
+  --ink: #282117;
+  --muted: #625749;
+  --line: #d9cebd;
+  --accent: #835724;
+  --accent-hover: #6e451c;
+  --accent-ink: #fffaf0;
+  --tint: #f3e6cf;
+  --focus-ring: #8357242c;
+  --card-hover-border: #a67d4c;
+  --card-hover: #f9f1e4;
+  --install-surface: #f7f0e4;
+  --viewer-shadow: #37251114;
+  --overlay-shadow: #37251125;
+  --code-gutter: #766857;
+  --syntax-comment: #6f6458;
+  --syntax-keyword: #8e397a;
+  --syntax-string: #426223;
+  --syntax-number: #915019;
+  --syntax-name: #345b88;
+  --syntax-meta: #963b36;
+}

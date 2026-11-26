@@ -27,7 +27,9 @@ jobs:
           cache: npm
           cache-dependency-path: market/package-lock.json
       - run: npm ci --prefix market
-      - run: npm test --prefix market
+      - run: npm run lint --prefix market
+      - run: npm run format:check --prefix market
+      - run: npm run typecheck --prefix market
       - run: npm run build --prefix market
       - uses: actions/upload-pages-artifact@v5.0.0
         with:

@@ -1,0 +1,63 @@
+import type { Messages } from '../types.ts';
+
+export default {
+  header: {
+    skip: 'Skip to main content',
+    home: 'Skills Group home',
+    navigation: 'Main navigation',
+    market: 'Skill Market',
+  },
+  catalog: {
+    description: 'Find, preview, and install reusable agent skills.',
+    metaDescription: 'Browse Skills Group, preview skill files, and install the skills you need.',
+    all: 'All skills',
+    search: 'Search skill names or descriptions',
+    count: (count) => `${count} ${count === 1 ? 'skill' : 'skills'}`,
+    noResults: 'No matching skills.',
+    empty: 'No skills yet.',
+    clearSearch: 'Clear search',
+    viewSkill: 'View details',
+  },
+  pagination: {
+    navigation: 'Skill list pagination',
+    previous: 'Previous',
+    next: 'Next',
+    page: (page, total) => `Page ${page} of ${total}`,
+    jumpTo: 'Jump to',
+    pageNumber: 'Page number',
+    jump: 'Go',
+  },
+  detail: {
+    navigation: 'Page navigation',
+    versionMissing: 'Version not specified',
+    source: 'Skill source',
+    toggleFiles: 'Expand or collapse skill files',
+    expandFiles: 'Expand skill files',
+    collapseFiles: 'Collapse skill files',
+    directory: 'File tree',
+    files: 'Skill files',
+    viewMode: 'Markdown display mode',
+    preview: 'Preview',
+    code: 'Source',
+    viewOnGitHub: 'View on GitHub',
+    opened: (path) => `Opened ${path}`,
+    unavailable: {
+      tooLarge: 'This file is too large to preview. View it on GitHub.',
+      unsupported: 'This file format can be viewed on GitHub.',
+    },
+  },
+  install: {
+    title: 'Installation',
+    requirement: 'Requires Node.js 22.20 or later',
+    copy: 'Copy command',
+    copied: { label: 'Copied', message: 'Installation command copied' },
+    manual: { label: 'Copy manually', message: 'Installation command selected. Copy it manually.' },
+  },
+  preferences: {
+    label: 'Display preferences',
+    language: 'Interface language',
+    darkMode: 'Dark mode',
+    switchTheme: (theme) => `Switch to ${theme.toLowerCase()} mode`,
+    themes: { dark: 'Dark', light: 'Light' },
+  },
+} satisfies Messages;

@@ -1,0 +1,191 @@
+.sourceCode {
+  margin: 0;
+  background: var(--code);
+  color: var(--ink);
+  font: 13px/1.65 var(--mono);
+  tab-size: 4;
+}
+.sourceText {
+  --gutter-width: calc(var(--line-number-width) + 20px);
+  position: relative;
+  display: block;
+  padding: 16px 18px 16px calc(var(--gutter-width) + 18px);
+  counter-reset: source-line;
+  font: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.sourceText::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--gutter-width);
+  border-right: 1px solid var(--line);
+  content: '';
+}
+.lineNumber {
+  counter-increment: source-line;
+  user-select: none;
+}
+.lineNumber::before {
+  position: absolute;
+  inset-inline-start: 0;
+  width: var(--gutter-width);
+  padding-inline-end: 10px;
+  color: var(--code-gutter);
+  font-style: normal;
+  font-weight: 400;
+  text-align: end;
+  content: counter(source-line);
+}
+.sourceCode:focus-visible {
+  outline-offset: -2px;
+}
+.imagePreview,
+.previewMessage {
+  margin: 0;
+  padding: 24px;
+}
+.previewImage {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+.previewMessage {
+  color: var(--muted);
+  font-size: 14px;
+}
+.markdown {
+  max-width: 84ch;
+  padding: 23px clamp(18px, 4vw, 30px) 34px;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.markdown > :first-child {
+  margin-top: 0;
+}
+.markdown > :last-child {
+  margin-bottom: 0;
+}
+.markdown :is(h3, h4, h5, h6) {
+  margin: 1.5em 0 0.5em;
+  line-height: 1.35;
+}
+.markdown h3 {
+  font-size: 24px;
+}
+.markdown h4 {
+  font-size: 18px;
+}
+.markdown h5,
+.markdown h6 {
+  font-size: 15px;
+}
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote {
+  margin-block: 0.65em 1em;
+}
+.markdown ul,
+.markdown ol {
+  padding-inline-start: 1.45em;
+}
+.markdown li + li {
+  margin-top: 0.3em;
+}
+.markdown a {
+  color: var(--accent);
+  text-underline-offset: 3px;
+}
+.markdown :not(pre) > code {
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  background: var(--tint);
+  font: 0.9em var(--mono);
+}
+.markdown pre {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 13px/1.65 var(--mono);
+  tab-size: 4;
+  white-space: pre-wrap;
+}
+.markdown pre code {
+  font: inherit;
+}
+:is(.sourceCode, .markdown) :global(.hljs-comment),
+:is(.sourceCode, .markdown) :global(.hljs-quote) {
+  color: var(--syntax-comment);
+  font-style: italic;
+}
+:is(.sourceCode, .markdown) :global(.hljs-keyword),
+:is(.sourceCode, .markdown) :global(.hljs-selector-tag),
+:is(.sourceCode, .markdown) :global(.hljs-doctag),
+:is(.sourceCode, .markdown) :global(.hljs-section) {
+  color: var(--syntax-keyword);
+}
+:is(.sourceCode, .markdown) :global(.hljs-string),
+:is(.sourceCode, .markdown) :global(.hljs-regexp),
+:is(.sourceCode, .markdown) :global(.hljs-link),
+:is(.sourceCode, .markdown) :global(.hljs-addition) {
+  color: var(--syntax-string);
+}
+:is(.sourceCode, .markdown) :global(.hljs-number),
+:is(.sourceCode, .markdown) :global(.hljs-literal),
+:is(.sourceCode, .markdown) :global(.hljs-built_in),
+:is(.sourceCode, .markdown) :global(.hljs-symbol) {
+  color: var(--syntax-number);
+}
+:is(.sourceCode, .markdown) :global(.hljs-title),
+:is(.sourceCode, .markdown) :global(.hljs-name),
+:is(.sourceCode, .markdown) :global(.hljs-type),
+:is(.sourceCode, .markdown) :global(.hljs-variable),
+:is(.sourceCode, .markdown) :global(.hljs-attr),
+:is(.sourceCode, .markdown) :global(.hljs-attribute),
+:is(.sourceCode, .markdown) :global(.hljs-bullet),
+:is(.sourceCode, .markdown) :global(.hljs-code) {
+  color: var(--syntax-name);
+}
+:is(.sourceCode, .markdown) :global(.hljs-meta),
+:is(.sourceCode, .markdown) :global(.hljs-deletion) {
+  color: var(--syntax-meta);
+}
+:is(.sourceCode, .markdown) :global(.hljs-emphasis) {
+  font-style: italic;
+}
+:is(.sourceCode, .markdown) :global(.hljs-strong) {
+  font-weight: 700;
+}
+.markdown blockquote {
+  margin-inline: 0;
+  padding-left: 13px;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+}
+.markdown img {
+  max-width: 100%;
+  height: auto;
+}
+.markdown table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.markdown th,
+.markdown td {
+  padding: 6px clamp(2px, 1vw, 9px);
+  border: 1px solid var(--line);
+}
+.markdown th {
+  background: var(--page);
+  text-align: left;
+}
+.markdown hr {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+}

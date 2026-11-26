@@ -1,21 +1,22 @@
-# Repository instructions
+# Skills Group repository instructions
 
-## Skill layout
+## Repository skills
 
-- Store every repository-owned skill under `.agents/skills/<skill-name>/`.
-- Each skill must contain `SKILL.md`; its frontmatter `name` must match the directory name and use lowercase letters, digits, and hyphens.
-- Do not create a top-level `skills/` directory. `.agents/skills/` is the canonical source used both by Codex repository discovery and by the cross-agent installers.
-- Keep optional `agents/openai.yaml`, `scripts/`, `references/`, and `assets/` inside the owning skill directory.
+- Store each skill at `.agents/skills/<skill-name>/SKILL.md`. The directory name and frontmatter `name` must match and use only lowercase letters, digits, and hyphens.
+- Keep supporting files such as `agents/openai.yaml`, `scripts/`, `references/`, and `assets/` inside the owning skill directory.
+- Codex discovers skills directly from this checkout. Invoke them with `$skill-name` or select them from `/skills`.
+- Use `skill-creator` for new or substantially revised skills. Run its `quick_validate.py` against each changed skill directory, then run the skill's focused tests when present.
+- Use the generated Skill Market as the catalog and keep its link in `README.md`. The catalog reads Git-tracked files under `.agents/skills/`.
+- Use `npx skills add` in the installation examples in `README.md` and Skill Market.
 
-## Creating or updating skills
+## Skill Market
 
-- Use the available `skill-creator` skill for new or substantially revised skills.
-- Add new skills directly to `.agents/skills/`; do not require a user-level Codex installation for use in this repository.
-- Update the skill table in `README.md` when adding, removing, or renaming a skill.
-- Validate every changed skill with the Codex `skill-creator` `quick_validate.py` script, then run the skill's focused tests when present.
-- After changing the repository layout or installers, test the macOS installer with an isolated temporary home. Keep the PowerShell installer behavior aligned and call out when it could not be executed locally.
+- Keep static rendering and browser hydration on the shared React components. Keep component styles in their CSS Modules and prefer class selectors for component styling.
+- Run the same checks as GitHub Pages for changes under `market/`. Install dependencies with `npm ci --prefix market` when needed.
 
-## Invocation
-
-- In Codex, explicitly invoke repository skills as `$skill-name`, or use `/skills` and select the skill.
-- Do not document arbitrary `/skill-name` as supported Codex syntax.
+```bash
+npm run lint --prefix market
+npm run format:check --prefix market
+npm run typecheck --prefix market
+npm run build --prefix market
+```

@@ -1,0 +1,135 @@
+.filePanel {
+  min-width: 0;
+  border-right: 1px solid var(--line);
+  background: var(--toolbar);
+}
+.filePanelHeader {
+  position: sticky;
+  top: 8px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 30px;
+  height: 30px;
+  margin: 7px;
+  border-radius: 6px;
+  color: var(--accent);
+  background: var(--toolbar);
+  cursor: pointer;
+  list-style: none;
+}
+.filePanel[open] > .filePanelHeader {
+  width: auto;
+  justify-content: flex-start;
+  padding-inline: 8px;
+}
+.filePanelLabel {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 650;
+}
+.filePanel:not([open]) > .filePanelHeader .filePanelLabel {
+  display: none;
+}
+.filePanelHeader::-webkit-details-marker {
+  display: none;
+}
+.filePanelHeader:hover {
+  background: var(--tint);
+}
+.filePanelHeader:focus-visible {
+  outline-offset: -2px;
+}
+.filePanelIcon {
+  position: relative;
+  display: block;
+  width: 15px;
+  height: 12px;
+}
+.filePanelIcon::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 0;
+  width: 8px;
+  height: 1.5px;
+  background: currentColor;
+  box-shadow:
+    0 4px currentColor,
+    0 8px currentColor;
+}
+.filePanelIcon::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 3px;
+  width: 5px;
+  height: 5px;
+  border: solid currentColor;
+  border-width: 1.5px 1.5px 0 0;
+  transform: rotate(45deg);
+}
+.filePanel[open] > .filePanelHeader .filePanelIcon::after {
+  transform: rotate(225deg);
+}
+.filePanel[open] > .filePanelHeader .expandLabel,
+.filePanel:not([open]) > .filePanelHeader .collapseLabel {
+  display: none;
+}
+.fileTree {
+  padding: 0 7px 9px;
+}
+.treeList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.folder > .treeList {
+  margin-left: 10px;
+  padding-left: 7px;
+  border-left: 1px solid var(--line);
+}
+.fileLink,
+.folderToggle {
+  border-radius: 5px;
+  color: var(--muted);
+  padding: 7px 8px;
+  overflow-wrap: anywhere;
+  font: 13px/1.4 var(--mono);
+}
+.fileLink {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-decoration: none;
+}
+.folderToggle {
+  cursor: pointer;
+}
+.fileLink:hover,
+.folderToggle:hover {
+  background: var(--tint);
+  color: var(--accent-hover);
+}
+.fileLink[aria-current] {
+  background: var(--tint);
+  color: var(--accent);
+  font-weight: 700;
+}
+.fileLink:focus-visible,
+.folderToggle:focus-visible {
+  outline-offset: -2px;
+}
+
+@media (max-width: 560px) {
+  .filePanel[open] {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .filePanelHeader {
+    position: static;
+  }
+}

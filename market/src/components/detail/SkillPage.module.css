@@ -1,0 +1,62 @@
+.detailHeading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 28%);
+  gap: 22px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+.backLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 11px;
+  margin-top: 14px;
+}
+.skillTitle {
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(28px, 4vw, 43px);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  overflow-wrap: anywhere;
+}
+.titleRow > .skillVersion {
+  font-size: 12px;
+}
+.skillDescription {
+  max-width: 82ch;
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.skillSource {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.skillSourceLink {
+  margin-left: 4px;
+}
+
+@media (max-width: 720px) {
+  .detailHeading {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

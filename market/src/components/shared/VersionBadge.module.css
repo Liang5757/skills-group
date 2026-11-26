@@ -1,0 +1,11 @@
+.version {
+  display: inline-block;
+  flex: none;
+  max-width: 100%;
+  padding: 4px 7px;
+  border-radius: 5px;
+  background: var(--tint);
+  color: var(--accent-hover);
+  font: 11px/1.2 var(--mono);
+  overflow-wrap: anywhere;
+}
