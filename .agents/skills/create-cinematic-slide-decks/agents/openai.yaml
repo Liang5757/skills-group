@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cinematic Slide Decks"
+  short_description: "Build cinematic, interactive web slide decks"
+  default_prompt: "Use $create-cinematic-slide-decks to turn my material into an interactive presentation with a meaningful visual reveal."
