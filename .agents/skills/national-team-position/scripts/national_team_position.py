@@ -81,7 +81,8 @@ def sample_dates(start_date, end_date, freq):
     else:
         d = start.replace(day=15)
         while d <= end:
-            out.append(d)
+            if d >= start:
+                out.append(d)
             d = (d.replace(year=d.year + 1, month=1) if d.month == 12
                  else d.replace(month=d.month + 1))
     return out
@@ -102,13 +103,17 @@ def group_shares(df):
 
 def fetch_shares(start_date, end_date, freq):
     dates = sample_dates(start_date, end_date, freq)
+    start = datetime.strptime(start_date, "%Y-%m-%d")
     print(f"共 {len(dates)} 个采样点需要查询...")
     results, fail, duplicate = [], 0, 0
     seen_dates = set()
     for i, sd in enumerate(dates):
         found = False
-        for offset in [0, -1, -2, -3, -4]:
-            try_str = (sd + timedelta(days=offset)).strftime("%Y%m%d")
+        for offset in range(5):
+            candidate = sd - timedelta(days=offset)
+            if candidate < start:
+                break
+            try_str = candidate.strftime("%Y%m%d")
             try:
                 df = ak.fund_etf_scale_sse(date=try_str)
                 if df is not None and "基金代码" in df.columns and len(df) > 0:

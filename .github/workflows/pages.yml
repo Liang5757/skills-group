@@ -7,14 +7,20 @@ on:
       - '.agents/skills/**'
       - 'market/**'
       - '.github/workflows/pages.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.agents/skills/**'
+      - 'market/**'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: github-pages
-  cancel-in-progress: false
+  group: github-pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -30,8 +36,10 @@ jobs:
       - run: npm run lint --prefix market
       - run: npm run format:check --prefix market
       - run: npm run typecheck --prefix market
+      - run: npm test --prefix market
       - run: npm run build --prefix market
       - uses: actions/upload-pages-artifact@v5.0.0
+        if: github.ref == 'refs/heads/main'
         with:
           path: market/dist
           include-hidden-files: true

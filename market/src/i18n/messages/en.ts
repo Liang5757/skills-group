@@ -39,6 +39,8 @@ export default {
     viewMode: 'Markdown display mode',
     preview: 'Preview',
     code: 'Source',
+    loadingSource: 'Loading source…',
+    sourceUnavailable: 'Could not load the source. Switch to Preview and try again, or view it on GitHub.',
     viewOnGitHub: 'View on GitHub',
     opened: (path) => `Opened ${path}`,
     unavailable: {

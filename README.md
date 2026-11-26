@@ -34,7 +34,7 @@ The catalog, file tree, and previews are generated from Git-tracked files under 
 - `hooks/` owns React state and browser effects for search, pagination, page metadata, and file loading. `lib/` contains the data functions and validators, and `types/` defines page, skill, and preview data shared by the generator and UI.
 - `i18n/` owns the locale registry and message catalogs. Skill descriptions and files display the repository text.
 - `theme/` owns theme colors, syntax highlighting tokens, and theme initialization. `preferences/` owns persisted language and appearance settings.
-- In-place file navigation loads the target file's `preview.json`. The Pages workflow runs ESLint, Prettier, and TypeScript checks before building.
+- In-place file navigation loads the target file's `preview.json`. Markdown source is loaded on demand from `source.json`. GitHub Actions runs ESLint, Prettier, TypeScript, and site tests for pull requests and before deploying.
 
 Use Node.js 22.13+ or Node.js 24+ to build and check the market.
 
@@ -43,6 +43,7 @@ npm ci --prefix market
 npm run lint --prefix market
 npm run format:check --prefix market
 npm run typecheck --prefix market
+npm test --prefix market
 npm run build --prefix market
 python3 -m http.server 8000 --directory market/dist
 ```

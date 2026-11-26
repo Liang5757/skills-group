@@ -6,7 +6,7 @@ export interface HighlightedSource {
 export type UnavailableReason = 'tooLarge' | 'unsupported';
 
 export type FilePreview =
-  | { kind: 'markdown'; content: string; source: HighlightedSource }
+  | { kind: 'markdown'; content: string; sourceUrl: string }
   | { kind: 'text'; source: HighlightedSource }
   | { kind: 'image'; url: string }
   | { kind: 'unavailable'; reason: UnavailableReason };

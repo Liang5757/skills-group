@@ -7,7 +7,8 @@
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/site.test.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

@@ -18,5 +18,6 @@
 npm run lint --prefix market
 npm run format:check --prefix market
 npm run typecheck --prefix market
+npm test --prefix market
 npm run build --prefix market
 ```

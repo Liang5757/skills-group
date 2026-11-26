@@ -17,5 +17,5 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["build.ts", "build/**/*.ts", "src"]
+  "include": ["build.ts", "build/**/*.ts", "src", "tests"]
 }

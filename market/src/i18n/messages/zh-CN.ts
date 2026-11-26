@@ -40,6 +40,8 @@ const messages = {
     viewMode: 'Markdown 查看方式',
     preview: '预览',
     code: '源码',
+    loadingSource: '正在加载源码…',
+    sourceUnavailable: '源码加载失败。切回预览后可重试，或在 GitHub 查看。',
     viewOnGitHub: '在 GitHub 查看',
     opened: (path: string) => `已打开 ${path}`,
     unavailable: {

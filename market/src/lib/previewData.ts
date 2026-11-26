@@ -1,7 +1,7 @@
 import { isRecord } from './isRecord.ts';
 import type { FilePreview, FilePreviewData, HighlightedSource } from '../types/preview.ts';
 
-function isHighlightedSource(value: unknown): value is HighlightedSource {
+export function isHighlightedSource(value: unknown): value is HighlightedSource {
   return (
     isRecord(value) &&
     typeof value.content === 'string' &&
@@ -15,7 +15,7 @@ function isFilePreview(value: unknown): value is FilePreview {
   if (!isRecord(value)) return false;
   switch (value.kind) {
     case 'markdown':
-      return typeof value.content === 'string' && isHighlightedSource(value.source);
+      return typeof value.content === 'string' && typeof value.sourceUrl === 'string';
     case 'text':
       return isHighlightedSource(value.source);
     case 'image':

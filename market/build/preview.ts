@@ -1,4 +1,4 @@
-import { copyFileSync, readFileSync } from 'node:fs';
+import { copyFileSync, readFileSync, writeFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import hljs from 'highlight.js';
 import MarkdownIt from 'markdown-it';
@@ -74,14 +74,16 @@ function renderMarkdown(
   file: RepositoryFile,
   routes: MarkdownEnvironment['routes'],
   site: RepositorySite,
+  page: string,
   bodyOffset = 0,
 ): FilePreview {
   const directory = file.encodedPath.slice(0, file.encodedPath.lastIndexOf('/') + 1);
   const environment: MarkdownEnvironment = { directory, root: file.root, routes, site };
+  writeFileSync(join(page, 'source.json'), JSON.stringify(renderSource(source, 'markdown')));
   return {
     kind: 'markdown',
     content: markdown.render(source.slice(bodyOffset), environment),
-    source: renderSource(source, 'markdown'),
+    sourceUrl: `./source.json${site.assetQuery}`,
   };
 }
 
@@ -92,7 +94,8 @@ export function readPreview(
   file: RepositoryFile,
   page: string,
 ): FilePreview {
-  if (file.path === 'SKILL.md') return renderMarkdown(skill.entrypoint, file, skill.routes, site, skill.bodyOffset);
+  if (file.path === 'SKILL.md')
+    return renderMarkdown(skill.entrypoint, file, skill.routes, site, page, skill.bodyOffset);
   const sourcePath = join(repositoryDir, file.repositoryPath);
   if (file.imageName) {
     copyFileSync(sourcePath, join(page, file.imageName));
@@ -111,7 +114,7 @@ export function readPreview(
   if (/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(content)) {
     return { kind: 'unavailable', reason: 'unsupported' };
   }
-  if (/\.(?:md|markdown)$/i.test(file.path)) return renderMarkdown(content, file, skill.routes, site);
+  if (/\.(?:md|markdown)$/i.test(file.path)) return renderMarkdown(content, file, skill.routes, site, page);
   const extension = extname(file.path).slice(1).toLowerCase();
   return { kind: 'text', source: renderSource(content, languageAliases.get(extension) ?? extension) };
 }
